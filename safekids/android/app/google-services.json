@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "235259248825",
+    "project_id": "safe-kids-da945",
+    "storage_bucket": "safe-kids-da945.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235259248825:android:360f40b64a6ea01087db68",
+        "android_client_info": {
+          "package_name": "com.safekids"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235259248825-d7jnkhfoijuo4abm3cpk5lrgkgkullrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoyDOgjwvj3Dvuul8ID3u5sUK0mXFwrXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235259248825-d7jnkhfoijuo4abm3cpk5lrgkgkullrp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
