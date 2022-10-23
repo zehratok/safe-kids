@@ -2,20 +2,19 @@ import { StyleSheet, Dimensions } from "react-native";
 
 export default StyleSheet.create({
     container: {
-        padding: 8,
+        flex: 1,
         marginHorizontal: 30,
         marginVertical: 10,
-        backgroundColor: '#468397',
-        borderRadius: 50,
         alignItems: "center",
+        borderRadius: 50,
+        backgroundColor: '#468397',
     },
     button_container: {
-        flexDirection: "row",
-        alignItems: "center",
+        backgroundColor: '#468397',
     },
-    title: {
+    button_text: {
         fontWeight: "bold",
         fontSize: 17,
-        color: "white",
+        color: "#ffffff",
     }
 });
