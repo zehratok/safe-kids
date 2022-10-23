@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Welcome from './pages/welcome/Welcome'
+import Welcome from './pages/both/welcome/Welcome'
 import ParentLogin from './pages/parent/auth/Login/Login'
 import ParentRegister from './pages/parent/auth/Register/Register'
 import ChildLogin from './pages/child/auth/Login/Login'
