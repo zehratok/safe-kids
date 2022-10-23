@@ -33,17 +33,30 @@ export default StyleSheet.create({
         padding: '10%',
         marginTop: '20%'
     },
-    question_text: {
-        textAlign: 'center',
-        fontSize: 13,
-        fontWeight: "bold",
-        color: '#D9AA60'
+    forgot_password_view: {
+        alignSelf: "flex-end",
+        marginRight: 5,
+        marginVertical: -5
     },
-    link_text: {
+    forgot_password_text: {
         color: '#B88296',
         fontSize: 12,
         fontWeight: "bold",
         fontStyle: 'italic',
+    },
+    question_text: {
+        marginTop: 5,
+        textAlign: 'center',
+        fontSize: 13,
+        fontWeight: "bold",
+        color: '#D9AA60',
+    },
+    register_link_text: {
+        color: '#B88296',
+        fontSize: 12,
+        fontWeight: "bold",
+        fontStyle: 'italic',
+        textDecorationLine: 'underline',
     },
 
 

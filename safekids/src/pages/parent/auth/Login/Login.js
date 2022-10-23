@@ -1,12 +1,11 @@
-import { View, Text, ScrollView, ImageBackground, Image } from 'react-native'
 import React from 'react'
-import styles from './Login.style';
-import { Stack, Pressable, Center, NativeBaseProvider, CheckIcon, CheckCircleIcon, Box, FormControl, StatusBar } from "native-base";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Input from '../../../../components/Input/TextInput'
+import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
+import { NativeBaseProvider, StatusBar } from "native-base";
+import { Link } from '@react-navigation/native'
 import Button from '../../../../components/Button/Button'
+import Input from '../../../../components/Input/TextInput'
+import styles from './Login.style';
+
 const Login = () => {
 
   const [show, setShow] = React.useState(false);
@@ -20,7 +19,6 @@ const Login = () => {
         source={require('../../../../assets/images/background.png')}
         style={styles.bg_image}>
       </ImageBackground>
-
       <View style={styles.bottom_view}>
         <View style={styles.parents_image_view}>
           <Image style={styles.parents_image} source={require('../../../../assets/images/parents.png')} />
@@ -31,10 +29,15 @@ const Login = () => {
             <Input label='Parolanızı Girin' placeholder="Parola" leftIcon='lock'
               type={show ? "text" : "password"}
               onPress={() => setShow(!show)} rightIcon={show ? "eye" : "eye-off"} />
-            <Button text='Giriş Yap' />
+            <Link to={{ screen: 'Forgot Password' }} style={styles.forgot_password_view}>
+              <Text style={styles.forgot_password_text}>Parolanızı mı unuttunuz?</Text>
+            </Link>
+            <Button text='Giriş Yap' onPress={() => console.log("deneme")} />
           </NativeBaseProvider>
-          <Text style={styles.question_text}> Hesabınız yok mu?
-            <Text style={styles.link_text}> {''} Hemen kaydolun. </Text>
+          <Text style={styles.question_text}> Hesabınız yok mu? {' '}
+            <Link to={{ screen: 'Parent Register' }} >
+              <Text style={styles.register_link_text}>Hemen kaydolun.</Text>
+            </Link>
           </Text>
         </View>
       </View>
