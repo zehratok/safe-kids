@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import { Box, FormControl, Input, Pressable } from 'native-base'
 import styles from './TextInput.style';
@@ -14,11 +14,11 @@ const TextInput = ({ label, placeholder, leftIcon, type, onPress, rightIcon }) =
             style={styles.label}>
             {label}
           </FormControl.Label>
-          <Input style={styles.input}
-            variant="rounded"
-            keyboardType="email-address"
-            placeholder={placeholder}
+          <Input
             type={type}
+            style={styles.input}
+            variant="rounded"
+            placeholder={placeholder}
             InputLeftElement={
               <MaterialCommunityIcons name={leftIcon} style={styles.left_icon} />
             }

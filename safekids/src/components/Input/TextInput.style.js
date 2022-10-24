@@ -3,7 +3,6 @@ import { StyleSheet, Dimensions } from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        marginBottom: 10,
     },
     input: {
         fontSize: 15,
