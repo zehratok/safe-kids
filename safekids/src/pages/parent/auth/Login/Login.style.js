@@ -33,25 +33,25 @@ export default StyleSheet.create({
         padding: '10%',
         marginTop: '20%'
     },
-    forgot_password_view: {
-        alignSelf: "flex-end",
-        marginRight: 5,
-        marginVertical: -5
-    },
-    forgot_password_text: {
-        color: '#B88296',
-        fontSize: 12,
-        fontWeight: "bold",
-        fontStyle: 'italic',
-    },
-    question_text: {
+    register_link_view: {
+        alignSelf: "center",
         marginTop: 5,
-        textAlign: 'center',
-        fontSize: 13,
         fontWeight: "bold",
         color: '#D9AA60',
     },
     register_link_text: {
+        textAlign: 'center',
+        color: '#D9AA60',
+        fontSize: 12,
+        fontWeight: "bold",
+        fontStyle: 'italic',
+    },
+    forgot_password_view: {
+        alignSelf: "center",
+        marginRight: 5,
+        marginTop: 5
+    },
+    forgot_password_text: {
         color: '#B88296',
         fontSize: 12,
         fontWeight: "bold",

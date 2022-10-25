@@ -29,16 +29,15 @@ const Login = () => {
             <Input label='Parolanızı Girin' placeholder="Parola" leftIcon='lock'
               type={show ? "text" : "password"}
               onPress={() => setShow(!show)} rightIcon={show ? "eye" : "eye-off"} />
-            <Link to={{ screen: 'Forgot Password' }} style={styles.forgot_password_view}>
-              <Text style={styles.forgot_password_text}>Parolanızı mı unuttunuz?</Text>
-            </Link>
+
             <Button text='Giriş Yap' onPress={() => console.log("deneme")} />
           </NativeBaseProvider>
-          <Text style={styles.question_text}> Hesabınız yok mu? {' '}
-            <Link to={{ screen: 'Parent Register' }} >
-              <Text style={styles.register_link_text}>Hemen kaydolun.</Text>
-            </Link>
-          </Text>
+          <Link to={{ screen: 'Parent Register' }} style={styles.register_link_view} >
+            <Text style={styles.register_link_text}> Hesabınız yok mu? Hemen kaydolun. </Text>
+          </Link>
+          <Link to={{ screen: 'Forgot Password' }} style={styles.forgot_password_view}>
+            <Text style={styles.forgot_password_text}>Parolanızı mı unuttunuz?</Text>
+          </Link>
         </View>
       </View>
 
