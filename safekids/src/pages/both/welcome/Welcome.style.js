@@ -1,16 +1,17 @@
 import { StyleSheet, Dimensions } from "react-native";
+import colors from "../../../styles/colors";
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: colors.main_white,
     },
     header_text: {
         fontSize: 50,
         fontWeight: "bold",
         textAlign: "center",
         marginTop: Dimensions.get("window").height * 0.15,
-        color: '#537F8A',
+        color: colors.main_green,
         fontFamily: 'sans-serif-medium',
     },
     welcome_text: {
@@ -19,7 +20,7 @@ export default StyleSheet.create({
         fontFamily: 'sans-serif-medium',
         textAlign: "center",
         marginTop: Dimensions.get("window").height * 0.0075,
-        color: '#D9AA60'
+        color: colors.main_yellow,
     },
     button_container: {
         alignContent: "center",
@@ -31,14 +32,14 @@ export default StyleSheet.create({
         borderRadius: 100,
         width: 150,
         height: 150,
-        backgroundColor: '#B0CFD5',
+        backgroundColor: colors.main_blue,
     },
     button_child: {
         flexDirection: "row",
         borderRadius: 100,
         width: 150,
         height: 150,
-        backgroundColor: '#B0CFD5',
+        backgroundColor: colors.main_blue,
     },
     parents_image: {
         marginTop: -15,
@@ -63,7 +64,7 @@ export default StyleSheet.create({
         fontWeight: "bold",
         fontFamily: 'sans-serif-medium',
         fontStyle: 'italic',
-        color: '#B0CFD5',
+        color: colors.main_blue,
         textAlign: "center",
     },
 

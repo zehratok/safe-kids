@@ -1,20 +1,21 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet} from "react-native";
+import colors from "../../styles/colors";
 
 export default StyleSheet.create({
     container: {
         flex: 1,
+        borderRadius: 50,
         marginHorizontal: 30,
         marginVertical: 10,
+        backgroundColor: colors.sec_green,
         alignItems: "center",
-        borderRadius: 50,
-        backgroundColor: '#468397',
     },
     button_container: {
-        backgroundColor: '#468397',
+        backgroundColor: colors.sec_green,
     },
     button_text: {
         fontWeight: "bold",
         fontSize: 17,
-        color: "#ffffff",
+        color: colors.main_white,
     }
 });

@@ -1,16 +1,17 @@
 import { StyleSheet, Dimensions } from "react-native";
+import colors from "../../../../styles/colors";
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ffffff",
+        backgroundColor: colors.main_white,
     },
     bg_image: {
         height: Dimensions.get('window').height / 3,
-        backgroundColor: "#B0CFD5"
+        backgroundColor: colors.main_blue
     },
     bottom_view: {
-        backgroundColor: '#ffffff',
+        backgroundColor: colors.main_white,
         bottom: Dimensions.get('window').height / 5,
         borderTopStartRadius: 50,
         borderTopEndRadius: 50,
@@ -18,7 +19,7 @@ export default StyleSheet.create({
     child_image_view: {
         borderRadius: 100,
         alignSelf: "center",
-        backgroundColor: '#B0CFD5',
+        backgroundColor: colors.main_blue,
         position: 'absolute',
         marginTop: -75,
         width: 150,
@@ -47,7 +48,7 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontSize: 12,
         fontWeight: "bold",
-        color: '#D9AA60',
+        color: colors.main_yellow,
     },
 
 

@@ -1,4 +1,5 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
+import colors from "../../styles/colors";
 
 export default StyleSheet.create({
     container: {
@@ -7,7 +8,7 @@ export default StyleSheet.create({
     input: {
         fontSize: 15,
         fontWeight: "bold",
-        color: '#537F8A',
+        color: colors.main_green,
     },
     label: {
         marginHorizontal: 5,
@@ -15,12 +16,12 @@ export default StyleSheet.create({
     },
     left_icon: {
         marginLeft: 10,
-        color: '#468397',
+        color: colors.main_green,
         fontSize: 20,
     },
     right_icon: {
         marginRight: 10,
-        color: '#D9AA60',
+        color: colors.main_yellow,
         fontSize: 20,
     }
 
