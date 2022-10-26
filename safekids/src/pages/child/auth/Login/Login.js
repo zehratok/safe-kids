@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { Link } from '@react-navigation/native'
+import { Formik } from 'formik';
 import Button from '../../../../components/Button/Button'
 import Input from '../../../../components/Input/TextInput'
 import styles from './Login.style';
@@ -10,6 +11,14 @@ const Login = () => {
 
   const [show, setShow] = React.useState(false);
 
+  const initialFormValues = {
+    usermail: '',
+    password: ''
+  };
+
+  function handleLogin(formValues) {
+    console.log(formValues);
+  }
 
   return (
     <ScrollView style={styles.container}
@@ -25,13 +34,29 @@ const Login = () => {
           <Image style={styles.girl_image} source={require('../../../../assets/images/child_girl.png')} />
         </View>
         <View style={styles.form_view}>
-          <NativeBaseProvider>
-            <Input label='E-posta Adresinizi Girin' placeholder="E-posta" leftIcon='email' type='text' />
-            <Input label='Parolanızı Girin' placeholder="Parola" leftIcon='lock'
-              type={show ? "text" : "password"}
-              onPress={() => setShow(!show)} rightIcon={show ? "eye" : "eye-off"} />
-            <Button text='Giriş Yap' onPress={() => console.log("deneme")} />
-          </NativeBaseProvider>
+          <Formik initialValues={initialFormValues} onSubmit={handleLogin}>
+            {({ handleChange, handleSubmit, values }) => (
+              <>
+                <NativeBaseProvider>
+                  <Input
+                    placeholder="E-posta" leftIcon='email'
+                    label='E-posta Adresinizi Girin'
+                    type='text' value={values.usermail}
+                    onChangeText={handleChange('usermail')}
+                  />
+                  <Input
+                    placeholder="Parola" leftIcon='lock'
+                    label='Parolanızı Girin' value={values.password}
+                    type={show ? "text" : "password"}
+                    onPress={() => setShow(!show)}
+                    rightIcon={show ? "eye" : "eye-off"}
+                    onChangeText={handleChange('password')}
+                  />
+                  <Button text='Giriş Yap' onPress={handleSubmit} />
+                </NativeBaseProvider>
+              </>
+            )}
+          </Formik>
           <Link to={{ screen: 'Child Register' }} style={styles.register_link_view} >
             <Text style={styles.register_link_text}> Hesabınız yok mu? Hemen kaydolun.</Text>
           </Link>

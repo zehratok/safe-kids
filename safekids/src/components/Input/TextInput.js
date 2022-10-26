@@ -4,7 +4,7 @@ import { Box, FormControl, Input, Pressable } from 'native-base'
 import styles from './TextInput.style';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const TextInput = ({ label, placeholder, leftIcon, type, onPress, rightIcon }) => {
+const TextInput = ({ label, leftIcon, onChangeText, onPress, rightIcon, placeholder, type, value, }) => {
   return (
     <View style={styles.container}>
       <Box>
@@ -15,6 +15,8 @@ const TextInput = ({ label, placeholder, leftIcon, type, onPress, rightIcon }) =
             {label}
           </FormControl.Label>
           <Input
+            value={value}
+            onChangeText={onChangeText}
             type={type}
             style={styles.input}
             variant="rounded"
