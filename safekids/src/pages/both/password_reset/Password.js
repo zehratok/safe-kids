@@ -4,12 +4,46 @@ import { NativeBaseProvider, StatusBar } from "native-base";
 import { Formik } from 'formik';
 import Button from '../../../components/Button/Button'
 import Input from '../../../components/Input/TextInput'
+import auth from '@react-native-firebase/auth';
+import { showMessage } from 'react-native-flash-message';
+import authErrorMessageParser from '../../../utils/authErrorMessageParser';
+import colors from '../../../styles/colors';
 import styles from './Password.style';
 
 const Password = () => {
 
-  function handleResetPassword(formValues) {
-    console.log(formValues);
+  const [loading, setLoading] = React.useState(false);
+
+  async function handleResetPassword(formValues) {
+    if (formValues.usermail === '') {
+      showMessage({
+        message: 'Lütfen e-posta adresinizi giriniz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1 || formValues.usermail.indexOf(' ') !== -1) {
+      showMessage({
+        message: 'Lütfen geçerli bir e-posta adresi giriniz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    try {
+      setLoading(true);
+      await auth().sendPasswordResetEmail(formValues.usermail)
+      showMessage({
+        message: 'Şifre sıfırlama e-postası gönderildi.',
+        backgroundColor: colors.main_green,
+      });
+    } catch (error) {
+      showMessage({
+        message: authErrorMessageParser(error.code),
+        backgroundColor: colors.main_pink,
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
 
@@ -35,7 +69,7 @@ const Password = () => {
                     label='E-posta Adresinizi Girin' value={values.usermail}
                     onChangeText={handleChange('usermail')}
                   />
-                  <Button text='Parolamı Sıfırla' onPress={handleSubmit} />
+                  <Button text='Parolamı Sıfırla' onPress={handleSubmit} loading={loading} />
                 </NativeBaseProvider>
               </>
             )}

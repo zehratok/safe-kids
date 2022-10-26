@@ -3,23 +3,98 @@ import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, Stack, StatusBar } from "native-base";
 import Button from '../../../../components/Button/Button'
 import Input from '../../../../components/Input/TextInput'
-import styles from './Register.style';
 import { Link } from '@react-navigation/native';
 import { Formik } from 'formik';
+import auth from '@react-native-firebase/auth';
+import { showMessage } from 'react-native-flash-message';
+import authErrorMessageParser from '../../../../utils/authErrorMessageParser';
+import colors from '../../../../styles/colors';
+import styles from './Register.style';
+
+
 const Register = () => {
 
   const [show, setShow] = React.useState(false);
   const [show2, setShow2] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const initialFormValues = {
     username: '',
     usermail: '',
     password: '',
-    passwordCheck: ''
+    passwordCheck: '',
+    userType: 'child'
 
   };
-  function handleRegister(formValues) {
-    console.log(formValues);
+
+  async function handleRegister(formValues) {
+    if (!formValues.username) {
+      showMessage({
+        message: 'Lütfen kullanıcı adınızı giriniz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (!formValues.usermail) {
+      showMessage({
+        message: 'Lütfen e-posta adresinizi giriniz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1 || formValues.usermail.indexOf(' ') !== -1) {
+      showMessage({
+        message: 'Lütfen geçerli bir e-posta adresi giriniz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (!formValues.password) {
+      showMessage({
+        message: 'Lütfen parolanızı giriniz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (formValues.password.length < 6) {
+      showMessage({
+        message: 'Parolanız en az 6 karakter olmalıdır.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (!formValues.passwordCheck) {
+      showMessage({
+        message: 'Lütfen parolanızı tekrar giriniz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (formValues.password !== formValues.passwordCheck) {
+      showMessage({
+        message: 'Parolalar eşleşmiyor',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    try {
+      setLoading(true);
+      await auth().createUserWithEmailAndPassword(
+        formValues.usermail,
+        formValues.password
+      );
+      showMessage({
+        message: 'Kayıt Başarılı',
+        backgroundColor: colors.main_green,
+      });
+    } catch (error) {
+      showMessage({
+        message: authErrorMessageParser(error.code),
+        backgroundColor: colors.main_pink,
+      })
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -61,7 +136,7 @@ const Register = () => {
                     onPress={() => setShow2(!show2)} type={show2 ? "text" : "password"}
                     value={values.passwordCheck} onChangeText={handleChange('passwordCheck')}
                   />
-                  <Button text='Kaydol' onPress={handleSubmit} />
+                  <Button text='Kaydol' onPress={handleSubmit} loading={loading} />
                 </NativeBaseProvider>
               </>
             )}
