@@ -8,10 +8,28 @@ import ParentRegister from './pages/parent/auth/Register/Register'
 import ChildLogin from './pages/child/auth/Login/Login'
 import ChildRegister from './pages/child/auth/Register/Register'
 import FlashMessage from "react-native-flash-message";
-
+import auth from '@react-native-firebase/auth';
+import ParentHome from './pages/parent/app/home/Home'
+import ChildHome from './pages/child/app/home/Home'
+import ParentProfile from './pages/parent/app/profile/Profile'
+import ChildProfile from './pages/child/app/profile/Profile'
 const Stack = createNativeStackNavigator();
 
-export default () => {
+export default ({ userType }) => {
+  const [userSession, setUserSession] = React.useState();
+  const [child, setChild] = React.useState(false);
+
+  userType = 'parent'
+  if (userType === 'child') {
+    setChild(true)
+  }
+
+  React.useEffect(() => {
+    auth().onAuthStateChanged((user) => {
+      setUserSession(!!user);
+    });
+  }, []);
+
   const AuthStack = () => {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -24,11 +42,34 @@ export default () => {
       </Stack.Navigator>
     )
   }
-
+  const ParentStack = () => {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Parent Home" component={ParentHome} />
+        <Stack.Screen name="Parent Profile" component={ParentProfile} />
+      </Stack.Navigator>
+    )
+  }
+  const ChildStack = () => {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Child Home" component={ChildHome} />
+        <Stack.Screen name="Child Profile" component={ChildProfile} />
+      </Stack.Navigator>
+    )
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="AuthStack" component={AuthStack} />
+        {!userSession ? (
+          <Stack.Screen name="AuthStack" component={AuthStack} />
+        ) : (
+          child ? (
+            <Stack.Screen name="ChildStack" component={ChildStack} />
+          ) : (
+            <Stack.Screen name="ParentStack" component={ParentStack} />
+          )
+        )}
       </Stack.Navigator>
       <FlashMessage position="top" />
     </NavigationContainer>
