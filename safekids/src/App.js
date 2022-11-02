@@ -9,26 +9,55 @@ import ChildLogin from './pages/child/auth/Login/Login'
 import ChildRegister from './pages/child/auth/Register/Register'
 import FlashMessage from "react-native-flash-message";
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import ParentHome from './pages/parent/app/home/Home'
 import ChildHome from './pages/child/app/home/Home'
 import ParentProfile from './pages/parent/app/profile/Profile'
 import ChildProfile from './pages/child/app/profile/Profile'
+import Loading from './pages/both/loading/Loading'
 const Stack = createNativeStackNavigator();
 
-export default ({ userType }) => {
+export default () => {
   const [userSession, setUserSession] = React.useState();
   const [child, setChild] = React.useState(false);
+  const [parent, setParent] = React.useState(false);
+  const [usertype, setUsertype] = React.useState('');
 
-  userType = 'parent'
-  if (userType === 'child') {
-    setChild(true)
-  }
+  React.useEffect(() => {
+    if (userSession) {
+      const userid = auth().currentUser.uid;
+      database()
+        .ref('userDetails')
+        .once('value')
+        .then(snapshot => {
+          for (let i in snapshot.val()) {
+            if (snapshot.val()[i].userid === userid) {
+              setUsertype(snapshot.val()[i].usertype);
+            }
+          }
+        });
+      if (usertype == 1) {
+        setChild(false);
+        setParent(true);
+      }
+      else if (usertype != 2) {
+        setParent(false);
+        setChild(true)
+      }
+    }
+  });
 
   React.useEffect(() => {
     auth().onAuthStateChanged((user) => {
       setUserSession(!!user);
+      if (user == null) {
+        setChild(false);
+        setParent(false);
+      }
+
     });
   }, []);
+
 
   const AuthStack = () => {
     return (
@@ -66,10 +95,16 @@ export default ({ userType }) => {
         ) : (
           child ? (
             <Stack.Screen name="ChildStack" component={ChildStack} />
-          ) : (
+          ) : (parent ? (
             <Stack.Screen name="ParentStack" component={ParentStack} />
           )
-        )}
+            :
+            (
+              <Stack.Screen name="Loading" component={Loading} />
+            )
+          )
+        )
+        }
       </Stack.Navigator>
       <FlashMessage position="top" />
     </NavigationContainer>
