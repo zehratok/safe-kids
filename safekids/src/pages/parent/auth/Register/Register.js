@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { Link } from '@react-navigation/native';
@@ -6,13 +6,19 @@ import { Formik } from 'formik';
 import Button from '../../../../components/Button/Button'
 import Input from '../../../../components/Input/TextInput'
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import { showMessage } from 'react-native-flash-message';
 import authErrorMessageParser from '../../../../utils/authErrorMessageParser';
 import colors from '../../../../styles/colors';
 import styles from './Register.style';
 
 const Register = () => {
-
+  useEffect(() => {
+    return () => {
+      console.log('unmounting...');
+    };
+  }, []);
+  
   const [show, setShow] = React.useState(false);
   const [show2, setShow2] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -22,10 +28,14 @@ const Register = () => {
     usermail: '',
     password: '',
     passwordCheck: '',
-    userType: 'parent'
   };
 
   async function handleRegister(formValues) {
+    const userDetailsValues = {
+      usertype: 1,
+      usermail: formValues.usermail,
+      userid: ''
+    };
     if (!formValues.username) {
       showMessage({
         message: 'Lütfen kullanıcı adınızı giriniz.',
@@ -81,6 +91,8 @@ const Register = () => {
         formValues.usermail,
         formValues.password
       );
+      userDetailsValues.userid = auth().currentUser.uid;
+      database().ref('userDetails/').push(userDetailsValues);
       showMessage({
         message: 'Kayıt Başarılı',
         backgroundColor: colors.main_green,
@@ -94,8 +106,6 @@ const Register = () => {
       setLoading(false);
     }
   }
-
-
   return (
     <ScrollView style={styles.container}
       showsVerticalScrollIndicator={false}>
