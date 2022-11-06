@@ -3,11 +3,11 @@ import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { Link } from '@react-navigation/native';
 import { Formik } from 'formik';
+import { showMessage } from 'react-native-flash-message';
 import Button from 'components/Button/Button'
 import Input from 'components/Input/TextInput'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import { showMessage } from 'react-native-flash-message';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
 import colors from 'styles/colors';
 import styles from './Register.style';
@@ -18,7 +18,7 @@ const Register = () => {
       console.log('unmounting...');
     };
   }, []);
-  
+
   const [show, setShow] = React.useState(false);
   const [show2, setShow2] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -32,9 +32,9 @@ const Register = () => {
 
   async function handleRegister(formValues) {
     const userDetailsValues = {
-      usertype: 1,
+      userid: '',
       usermail: formValues.usermail,
-      userid: ''
+      usertype: 1,
     };
     if (!formValues.username) {
       showMessage({
@@ -50,7 +50,14 @@ const Register = () => {
       });
       return;
     }
-    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1 || formValues.usermail.indexOf(' ') !== -1) {
+    if (formValues.usermail.indexOf(' ') !== -1) {
+      showMessage({
+        message: 'E-posta adresinizde boşluk olamaz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1) {
       showMessage({
         message: 'Lütfen geçerli bir e-posta adresi giriniz.',
         backgroundColor: colors.main_pink,
@@ -116,7 +123,7 @@ const Register = () => {
       </ImageBackground>
       <View style={styles.bottom_view}>
         <View style={styles.parents_image_view}>
-          <Image style={styles.parents_image} source={require('../../../../assets/images/parents.png')} />
+          <Image style={styles.parents_image} source={require('assets/images/parents.png')} />
         </View>
         <View style={styles.form_view}>
           <Formik initialValues={initialFormValues} onSubmit={handleRegister}>
@@ -159,8 +166,7 @@ const Register = () => {
           </Link>
         </View>
       </View>
-    </ScrollView >
+    </ScrollView>
   )
 }
-
 export default Register

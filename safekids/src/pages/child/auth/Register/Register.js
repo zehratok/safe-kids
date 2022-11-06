@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
-import { NativeBaseProvider, Stack, StatusBar } from "native-base";
+import { NativeBaseProvider, StatusBar } from "native-base";
+import { Formik } from 'formik';
+import { Link } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import Button from 'components/Button/Button'
 import Input from 'components/Input/TextInput'
-import { Link } from '@react-navigation/native';
-import { Formik } from 'formik';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import { showMessage } from 'react-native-flash-message';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
 import colors from 'styles/colors';
 import styles from './Register.style';
@@ -32,8 +32,8 @@ const Register = () => {
 
   async function handleRegister(formValues) {
     const userDetailsValues = {
-      usermail: formValues.usermail,
       userid: '',
+      usermail: formValues.usermail,
       usertype: 2,
     };
     if (!formValues.username) {
@@ -50,7 +50,14 @@ const Register = () => {
       });
       return;
     }
-    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1 || formValues.usermail.indexOf(' ') !== -1) {
+    if (formValues.usermail.indexOf(' ') !== -1) {
+      showMessage({
+        message: 'E-posta adresinizde boşluk olamaz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1) {
       showMessage({
         message: 'Lütfen geçerli bir e-posta adresi giriniz.',
         backgroundColor: colors.main_pink,
@@ -97,8 +104,6 @@ const Register = () => {
         message: 'Kayıt Başarılı',
         backgroundColor: colors.main_green,
       });
-
-
     } catch (error) {
       showMessage({
         message: authErrorMessageParser(error.code),
@@ -108,7 +113,6 @@ const Register = () => {
       setLoading(false);
     }
   }
-
   return (
     <ScrollView style={styles.container}
       showsVerticalScrollIndicator={false}>
@@ -158,8 +162,7 @@ const Register = () => {
           </Link>
         </View>
       </View>
-    </ScrollView >
+    </ScrollView>
   )
 }
-
 export default Register
