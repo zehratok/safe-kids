@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
-import { Link } from '@react-navigation/native'
 import { Formik } from 'formik';
+import { Link } from '@react-navigation/native'
+import { showMessage } from 'react-native-flash-message';
 import Button from 'components/Button/Button'
 import Input from 'components/Input/TextInput'
 import auth from '@react-native-firebase/auth';
-import { showMessage } from 'react-native-flash-message';
+import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
 import colors from 'styles/colors';
 import styles from './Login.style';
@@ -21,7 +22,7 @@ const Login = () => {
     password: ''
   };
 
-  async function handleLogin(formValues) {
+  const handleLoginTest = async (formValues) => {
     if (!formValues.usermail) {
       showMessage({
         message: 'Lütfen e-posta adresinizi giriniz.',
@@ -29,7 +30,14 @@ const Login = () => {
       });
       return;
     }
-    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1 || formValues.usermail.indexOf(' ') !== -1) {
+    if (formValues.usermail.indexOf(' ') !== -1) {
+      showMessage({
+        message: 'E-posta adresinizde boşluk olamaz.',
+        backgroundColor: colors.main_pink,
+      });
+      return;
+    }
+    if (formValues.usermail.indexOf('@') === -1 || formValues.usermail.indexOf('.') === -1) {
       showMessage({
         message: 'Lütfen geçerli bir e-posta adresi giriniz.',
         backgroundColor: colors.main_pink,
@@ -52,6 +60,45 @@ const Login = () => {
     }
     try {
       setLoading(true);
+      await database()
+        .ref('userDetails')
+        .once('value')
+        .then(snapshot => {
+          let count = 0;
+          for (let i in snapshot.val()) {
+            if (snapshot.val()[i].usermail === formValues.usermail) {
+              if (snapshot.val()[i].usertype == 1) {
+                handleParentLogin(formValues);
+              }
+              else if (snapshot.val()[i].usertype == 2) {
+                showMessage({
+                  message: 'Bu e-posta adresi çocuk hesabına aittir. Çocuk girişi için lütfen çocuk giriş sayfasına gidiniz.',
+                  backgroundColor: colors.main_pink,
+                });
+              }
+            }
+            else count++;
+          }
+          if (count == Object.keys(snapshot.val()).length) {
+            showMessage({
+              message: 'Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.',
+              backgroundColor: colors.main_pink,
+            });
+            count = 0;
+          }
+        });
+    } catch (error) {
+      showMessage({
+        message: authErrorMessageParser(error.code),
+        backgroundColor: colors.main_pink,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleParentLogin = async (formValues) => {
+    try {
       await auth().signInWithEmailAndPassword(
         formValues.usermail,
         formValues.password
@@ -65,11 +112,14 @@ const Login = () => {
         message: authErrorMessageParser(error.code),
         backgroundColor: colors.main_pink,
       });
-    } finally {
-      setLoading(false);
     }
   }
 
+  useEffect(() => {
+    return () => {
+      console.log('...unmounting');
+    };
+  }, []);
   return (
     <ScrollView style={styles.container}
       showsVerticalScrollIndicator={false}>
@@ -83,7 +133,7 @@ const Login = () => {
           <Image style={styles.parents_image} source={require('assets/images/parents.png')} />
         </View>
         <View style={styles.form_view}>
-          <Formik initialValues={initialFormValues} onSubmit={handleLogin}>
+          <Formik initialValues={initialFormValues} onSubmit={handleLoginTest}>
             {({ handleChange, handleSubmit, values }) => (
               <>
                 <NativeBaseProvider>
@@ -114,9 +164,7 @@ const Login = () => {
           </Link>
         </View>
       </View>
-
-    </ScrollView >
+    </ScrollView>
   )
 }
-
 export default Login
