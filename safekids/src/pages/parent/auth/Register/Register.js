@@ -3,13 +3,13 @@ import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { Link } from '@react-navigation/native';
 import { Formik } from 'formik';
-import Button from '../../../../components/Button/Button'
-import Input from '../../../../components/Input/TextInput'
+import Button from 'components/Button/Button'
+import Input from 'components/Input/TextInput'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { showMessage } from 'react-native-flash-message';
-import authErrorMessageParser from '../../../../utils/authErrorMessageParser';
-import colors from '../../../../styles/colors';
+import authErrorMessageParser from 'utils/authErrorMessageParser';
+import colors from 'styles/colors';
 import styles from './Register.style';
 
 const Register = () => {
@@ -111,7 +111,7 @@ const Register = () => {
       showsVerticalScrollIndicator={false}>
       <StatusBar backgroundColor="#B0CFD5" barStyle="light-content" />
       <ImageBackground
-        source={require('../../../../assets/images/background.png')}
+        source={require('assets/images/background.png')}
         style={styles.bg_image}>
       </ImageBackground>
       <View style={styles.bottom_view}>

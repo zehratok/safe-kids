@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, Stack, StatusBar } from "native-base";
-import Button from '../../../../components/Button/Button'
-import Input from '../../../../components/Input/TextInput'
+import Button from 'components/Button/Button'
+import Input from 'components/Input/TextInput'
 import { Link } from '@react-navigation/native';
 import { Formik } from 'formik';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { showMessage } from 'react-native-flash-message';
-import authErrorMessageParser from '../../../../utils/authErrorMessageParser';
-import colors from '../../../../styles/colors';
+import authErrorMessageParser from 'utils/authErrorMessageParser';
+import colors from 'styles/colors';
 import styles from './Register.style';
 
 
@@ -114,13 +114,13 @@ const Register = () => {
       showsVerticalScrollIndicator={false}>
       <StatusBar backgroundColor="#B0CFD5" barStyle="light-content" />
       <ImageBackground
-        source={require('../../../../assets/images/background.png')}
+        source={require('assets/images/background.png')}
         style={styles.bg_image}>
       </ImageBackground>
       <View style={styles.bottom_view}>
         <View style={styles.child_image_view}>
-          <Image style={styles.boy_image} source={require('../../../../assets/images/child_boy.png')} />
-          <Image style={styles.girl_image} source={require('../../../../assets/images/child_girl.png')} />
+          <Image style={styles.boy_image} source={require('assets/images/child_boy.png')} />
+          <Image style={styles.girl_image} source={require('assets/images/child_girl.png')} />
         </View>
         <View style={styles.form_view}>
           <Formik initialValues={initialFormValues} onSubmit={handleRegister}>

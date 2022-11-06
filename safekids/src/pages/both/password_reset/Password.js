@@ -2,12 +2,12 @@ import React from 'react'
 import { Image, ImageBackground, ScrollView, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { Formik } from 'formik';
-import Button from '../../../components/Button/Button'
-import Input from '../../../components/Input/TextInput'
+import Button from 'components/Button/Button'
+import Input from 'components/Input/TextInput'
 import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
-import authErrorMessageParser from '../../../utils/authErrorMessageParser';
-import colors from '../../../styles/colors';
+import authErrorMessageParser from 'utils/authErrorMessageParser';
+import colors from 'styles/colors';
 import styles from './Password.style';
 
 const Password = () => {
@@ -52,12 +52,12 @@ const Password = () => {
       showsVerticalScrollIndicator={false}>
       <StatusBar backgroundColor="#B0CFD5" barStyle="light-content" />
       <ImageBackground
-        source={require('../../../assets/images/background.png')}
+        source={require('assets/images/background.png')}
         style={styles.bg_image}>
       </ImageBackground>
       <View style={styles.bottom_view}>
         <View style={styles.password_image_view}>
-          <Image style={styles.password_image} source={require('../../../assets/images/password.png')} />
+          <Image style={styles.password_image} source={require('assets/images/password.png')} />
         </View>
         <View style={styles.form_view}>
           <Formik initialValues={{ usermail: '' }} onSubmit={handleResetPassword}>
