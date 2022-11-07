@@ -1,5 +1,17 @@
 import { StyleSheet, Dimensions } from "react-native";
 import colors from "styles/colors";
+import dimensions from "styles/dimensions";
+
+if (dimensions.fullWidth < 375) {
+    var containerWidth = 0.8 * dimensions.fullWidth
+} else {
+    var containerWidth = 0.7 * dimensions.fullWidth
+}
+if (dimensions.fullHeight < 700) {
+    var containerHeight = 0.7 * dimensions.fullHeight
+} else {
+    var containerHeight = 0.8 * dimensions.fullHeight
+}
 
 export default StyleSheet.create({
     container: {
@@ -7,65 +19,65 @@ export default StyleSheet.create({
         backgroundColor: colors.main_white,
     },
     header_text: {
-        fontSize: 50,
+        fontSize: 0.12 * containerHeight,
         fontWeight: "bold",
         textAlign: "center",
-        marginTop: Dimensions.get("window").height * 0.15,
+        marginTop: 0.2 * containerHeight,
         color: colors.main_green,
         fontFamily: 'sans-serif-medium',
     },
     welcome_text: {
-        fontSize: 25,
+        fontSize: 0.06 * containerHeight,
         fontWeight: "bold",
         fontFamily: 'sans-serif-medium',
         textAlign: "center",
-        marginTop: Dimensions.get("window").height * 0.0075,
+        marginTop: 0.01 * containerHeight,
         color: colors.main_yellow,
     },
     button_container: {
         alignContent: "center",
         flexDirection: "row",
         justifyContent: "space-around",
-        marginTop: Dimensions.get('window').height * 0.15,
+        marginTop: 0.25 * containerHeight,
     },
     button_parents: {
         borderRadius: 100,
-        width: 150,
-        height: 150,
+        width: 0.55 * containerWidth,
+        height: 0.55 * containerWidth,
         backgroundColor: colors.main_blue,
     },
     button_child: {
         flexDirection: "row",
-        borderRadius: 100,
-        width: 150,
-        height: 150,
+        borderRadius: containerWidth,
+        width: 0.55 * containerWidth,
+        height: 0.55 * containerWidth,
         backgroundColor: colors.main_blue,
     },
     parents_image: {
-        marginTop: -15,
-        width: 130,
-        height: 170,
+        marginTop: -0.03 * containerHeight,
+        width: 0.5 * containerWidth,
+        height: 0.6 * containerWidth,
     },
     boy_image: {
-        marginLeft: -15,
-        width: 110,
-        height: 120,
+        marginLeft: -0.06 * containerWidth,
+        width: 0.5 * containerWidth,
+        height: 0.45 * containerWidth,
     },
     girl_image: {
-        marginLeft: -85,
-        marginTop: 30,
-        width: 145,
-        height: 120,
+        marginLeft: -0.4 * containerWidth,
+        marginTop: 0.12 * containerWidth,
+        width: 0.53 * containerWidth,
+        height: 0.42 * containerWidth,
     },
     choice_text: {
-        marginHorizontal: 25,
-        marginTop: Dimensions.get('window').height * 0.075,
-        fontSize: 22 - (Dimensions.get('window').width / 50),
+        textAlign: "center",
         fontWeight: "bold",
         fontFamily: 'sans-serif-medium',
         fontStyle: 'italic',
+        fontSize: 0.03 * containerHeight,
         color: colors.main_blue,
-        textAlign: "center",
+        marginHorizontal: 0.05 * containerWidth,
+        marginTop: 0.08 * containerHeight,
     },
 
 });
