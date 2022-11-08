@@ -1,13 +1,13 @@
-import { View, Text } from 'react-native'
+import { View, Text, SafeAreaView } from 'react-native'
 import React from 'react'
 import { Link } from '@react-navigation/native'
+import styles from './Home.style'
 
 const Home = () => {
   return (
-    <View>
-      <Text>Child Home</Text>
-      <Link to={{ screen: 'Child Profile' }} style={{ color: 'blue' }}> Profile git</Link>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={{ fontSize: 40, textAlign: 'center' }}>CHILD HOME</Text>
+    </SafeAreaView>
   )
 }
 

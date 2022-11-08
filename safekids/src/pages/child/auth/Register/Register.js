@@ -33,6 +33,7 @@ const Register = () => {
   async function handleRegister(formValues) {
     const userDetailsValues = {
       userid: '',
+      username: formValues.username,
       usermail: formValues.usermail,
       usertype: 2,
     };

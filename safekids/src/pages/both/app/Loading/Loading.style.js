@@ -4,9 +4,9 @@ import colors from 'styles/colors';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.main_white,
+        backgroundColor: colors.main_pink,
         justifyContent: 'center',
+        alignItems: 'center',
     },
 });
-
 export default styles;

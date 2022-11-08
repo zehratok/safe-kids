@@ -9,6 +9,8 @@ const Profile = () => {
             .signOut()
             .then(() => console.log('User signed out!'));
     }
+
+ 
     return (
         <View>
             <Text>Parent Profile</Text>

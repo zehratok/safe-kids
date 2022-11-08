@@ -1,9 +1,6 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import AuthStack from 'navigation/authStack'
-import ParentStack from 'navigation/parentStack'
-import ChildStack from 'navigation/childStack'
-import LoadingStack from 'navigation/loadingStack'
+import { AuthStack, ChildStack, LoadingStack, ParentStack } from 'navigation/index';
 import FlashMessage from "react-native-flash-message";
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -13,6 +10,7 @@ const App = () => {
   const [child, setChild] = React.useState(false);
   const [parent, setParent] = React.useState(false);
   const [usertype, setUsertype] = React.useState('');
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     if (userSession) {
@@ -30,60 +28,47 @@ const App = () => {
       if (usertype == 1) {
         setChild(false);
         setParent(true);
+        setLoading(false);
       }
       else if (usertype == 2) {
         setParent(false);
-        setChild(true)
+        setChild(true);
+        setLoading(false);
       }
-    }
-  });
-  React.useEffect(() => {
-    if (userSession) {
-      const userid = auth().currentUser.uid;
-      database()
-        .ref('userDetails')
-        .once('value')
-        .then(snapshot => {
-          for (let i in snapshot.val()) {
-            if (snapshot.val()[i].userid === userid) {
-              setUsertype(snapshot.val()[i].usertype);
-            }
-          }
-        });
-      if (usertype == 1) {
-        setChild(false);
-        setParent(true);
-      }
-      else if (usertype != 2) {
+      else {
         setParent(false);
-        setChild(true)
+        setChild(false);
+        setLoading(false);
       }
     }
   });
-
   React.useEffect(() => {
     auth().onAuthStateChanged((user) => {
       setUserSession(!!user);
       if (user == null) {
         setChild(false);
         setParent(false);
+        setLoading(false);
       }
-
     });
   }, []);
 
   return (
     <NavigationContainer>
-      {!userSession ? (
-        <AuthStack />
+      {loading ? (
+        <LoadingStack />
       ) : (
-        child ? (
-          <ChildStack />
-        ) : (parent ? (
-          <ParentStack />
-        ) :
-          (
-            <LoadingStack />
+        !userSession ? (
+          <AuthStack />
+        ) : (
+          child ? (
+            <ChildStack />
+          ) : (
+            parent ? (
+              <ParentStack />
+            ) : (
+              <LoadingStack />
+            )
           )
         )
       )}
