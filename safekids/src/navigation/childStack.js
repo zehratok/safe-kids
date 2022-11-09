@@ -1,22 +1,47 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ChildTab from './childTab';
-import LoadingStack from './loadingStack';
-import { useEffect } from 'react';
+import { Loading } from 'pages/both/app';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
+import { useEffect, useState } from 'react';
+import { Pairing } from 'pages/child/app';
 const Stack = createNativeStackNavigator();
 
-const childStack = () => {
+const ChildStack = ({ pairingg }) => {
+    const [pairing, setPairing] = useState(false);
+
 
     useEffect(() => {
-        return () => {
-            < LoadingStack />
-        }
-    }, []);
+        console.log("calisiyor");
+        database()
+            .ref('pairingTable')
+            .once('value')
+            .then(snapshot => {
+                for (let i in snapshot.val()) {
+                    if (snapshot.val()[i].childid === auth().currentUser.uid) {
+                        setPairing(true);
+                    }
+                }
+            })
+
+    }, [])
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='Child Home' component={ChildTab} />
+            {(pairing || pairingg) ? (
+                <Stack.Screen name='Child Home' component={ChildTab} />
+            ) : (
+                !pairing ? (
+                    <>
+                        <Stack.Screen name="Pairing" component={Pairing} />
+                        {/* <Stack.Screen name="childStack" component={ChildStack} /> */}
+                    </>
+                ) : (
+                    <Stack.Screen name="Loading" component={Loading} />
+                )
+            )}
         </Stack.Navigator>
     )
 }
-export default childStack
+export default ChildStack
