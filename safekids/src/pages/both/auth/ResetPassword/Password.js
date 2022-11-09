@@ -2,8 +2,7 @@ import React from 'react'
 import { Image, ImageBackground, ScrollView, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { Formik } from 'formik';
-import Button from 'components/Button/Button'
-import Input from 'components/Input/TextInput'
+import {Button, Input} from 'components/index'
 import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import authErrorMessageParser from 'utils/authErrorMessageParser';

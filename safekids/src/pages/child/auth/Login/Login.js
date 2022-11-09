@@ -4,8 +4,7 @@ import { NativeBaseProvider, StatusBar } from "native-base";
 import { Formik } from 'formik';
 import { Link } from '@react-navigation/native'
 import { showMessage } from 'react-native-flash-message';
-import Button from 'components/Button/Button'
-import Input from 'components/Input/TextInput'
+import {Button, Input} from 'components/index'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';

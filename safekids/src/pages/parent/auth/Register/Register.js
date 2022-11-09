@@ -4,8 +4,7 @@ import { NativeBaseProvider, StatusBar } from "native-base";
 import { Link } from '@react-navigation/native';
 import { Formik } from 'formik';
 import { showMessage } from 'react-native-flash-message';
-import Button from 'components/Button/Button'
-import Input from 'components/Input/TextInput'
+import { Button, Input } from 'components/index'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
@@ -31,6 +30,11 @@ const Register = () => {
   };
 
   async function handleRegister(formValues) {
+    const parentPairingValues = {
+      userid: '',
+      usermail: formValues.usermail,
+      pairingCode: ''
+    }
     const userDetailsValues = {
       userid: '',
       username: formValues.username,
@@ -100,7 +104,9 @@ const Register = () => {
         formValues.password
       );
       userDetailsValues.userid = auth().currentUser.uid;
+      parentPairingValues.userid = auth().currentUser.uid;
       database().ref('userDetails/').push(userDetailsValues);
+      database().ref('parentPairingCodes/').push(parentPairingValues);
       showMessage({
         message: 'Kayıt Başarılı',
         backgroundColor: colors.main_green,
