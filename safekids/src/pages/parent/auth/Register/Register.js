@@ -31,9 +31,10 @@ const Register = () => {
 
   async function handleRegister(formValues) {
     const parentPairingValues = {
+      isPaired: false,
+      pairingCode: '',
       userid: '',
       usermail: formValues.usermail,
-      pairingCode: ''
     }
     const userDetailsValues = {
       userid: '',

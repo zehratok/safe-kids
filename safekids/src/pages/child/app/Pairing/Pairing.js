@@ -50,50 +50,50 @@ const Pairing = ({ navigation }) => {
             .then(snapshot => {
                 for (let i in snapshot.val()) {
                     if (snapshot.val()[i].pairingCode == formValues.code) {
-                        if(snapshot.val()[i].isPaired == false){
-                        database()
-                            .ref('pairingTable')
-                            .push({
-                                parentid: snapshot.val()[i].userid,
-                                parentmail: snapshot.val()[i].usermail,
-                                childid: userid,
-                                childmail: auth().currentUser.email,
-                            })
-                            .then(() => {
-                                database()
-                                    .ref('parentPairingCodes')
-                                    .child(i)
-                                    .update({
-                                        isPaired: true,
-                                    })
-                                    .then(() => {
-                                        showMessage({
-                                            message: 'Başarılı',
-                                            description: 'Bağlantı başarılı.',
-                                            backgroundColor: colors.main_green,
-                                            icon: 'success',
-                                            duration: 3000,
-                                        })
-                                    })
-                                    .catch((error) => {
-                                        showMessage({
-                                            message: 'Hata',
-                                            description: databaseErrorMessageParse(error.code),
-                                            backgroundColor: colors.main_pink,
-                                            icon: 'danger',
-                                        })
-                                    })
-                            })
-                            .catch((error) => {
-                                showMessage({
-                                    message: 'Hata',
-                                    description: databaseErrorMessageParse(error.code),
-                                    backgroundColor: colors.main_pink,
-                                    icon: 'danger',
+                        if (snapshot.val()[i].isPaired == false) {
+                            database()
+                                .ref('pairingTable')
+                                .push({
+                                    parentid: snapshot.val()[i].userid,
+                                    parentmail: snapshot.val()[i].usermail,
+                                    childid: userid,
+                                    childmail: auth().currentUser.email,
                                 })
-                            })
+                                .then(() => {
+                                    database()
+                                        .ref('parentPairingCodes')
+                                        .child(i)
+                                        .update({
+                                            isPaired: true,
+                                        })
+                                        .then(() => {
+                                            showMessage({
+                                                message: 'Başarılı',
+                                                description: 'Bağlantı başarılı.',
+                                                backgroundColor: colors.main_green,
+                                                icon: 'success',
+                                                duration: 3000,
+                                            })
+                                        })
+                                        .catch((error) => {
+                                            showMessage({
+                                                message: 'Hata',
+                                                description: databaseErrorMessageParse(error.code),
+                                                backgroundColor: colors.main_pink,
+                                                icon: 'danger',
+                                            })
+                                        })
+                                })
+                                .catch((error) => {
+                                    showMessage({
+                                        message: 'Hata',
+                                        description: databaseErrorMessageParse(error.code),
+                                        backgroundColor: colors.main_pink,
+                                        icon: 'danger',
+                                    })
+                                })
                         }
-                        else{
+                        else {
                             showMessage({
                                 message: 'Hata',
                                 description: 'Bu ebeveyn cihazı zaten bir çocuk cihazı ile bağlı.',
