@@ -4,6 +4,11 @@ import dimensions from "styles/dimensions";
 
 var fullWidth = dimensions.fullWidth;
 var fullHeight = dimensions.fullHeight;
+if(fullWidth > fullHeight){
+    fullWidth = dimensions.fullHeight;
+    fullHeight = dimensions.fullWidth;
+}
+
 
 const styles = StyleSheet.create({
     container: {
@@ -12,24 +17,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    bg_image_top: {
+    bg_image: {
         width: fullWidth,
-        height: 0.32 * fullHeight,
-        position: 'absolute',
-        ...StyleSheet.absoluteFillObject,
-    },
-    bg_image_middle: {
-        width: fullWidth,
-        height: 0.35 * fullHeight,
-        position: 'absolute',
-        top: 0.3 * fullHeight,
-    },
-    bg_image_bottom: {
-        width: fullWidth,
-        height: 0.4 * fullHeight,
-        position: 'absolute',
-        top: 0.65 * fullHeight,
-        bottom: 0,
+        height: fullHeight,
+        justifyContent: "center",
+        alignItems: "center",
     },
     logout_button: {
         position: 'absolute',
@@ -48,9 +40,7 @@ const styles = StyleSheet.create({
     pairing_view: {
         width: 0.8 * fullWidth,
         height: 0.5 * fullHeight,
-        top: 0.21 * fullHeight,
         backgroundColor: colors.main_white,
-        position: 'absolute',
         borderRadius: 0.06 * fullWidth,
     },
     greeting_view: {
@@ -97,7 +87,21 @@ const styles = StyleSheet.create({
         fontSize: 0.05 * fullWidth,
         fontWeight: 'bold',
         color: colors.main_pink,
-    }
+    },
+    complete_pairing_button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 0.05 * fullWidth,
+        width: 0.7 * fullWidth,
+        height: 0.07 * fullHeight,
+        borderRadius: 0.04 * fullHeight,
+        backgroundColor: colors.main_green,
+    },
+    complete_pairing_button_text: {
+        color: colors.main_white,
+        fontSize: 0.025 * fullHeight,
+        fontWeight: 'bold',
+    },
 
 
 

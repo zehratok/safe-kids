@@ -5,18 +5,20 @@ import { Formik } from 'formik';
 import { Input } from 'components';
 import { NativeBaseProvider } from 'native-base';
 import { showMessage } from 'react-native-flash-message';
+import { useDispatch } from 'react-redux';
+import { setParentId, setChildId, setPaired } from 'config/slices/pairingSlice';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import databaseErrorMessageParse from 'utils/databaseErrorMessageParse';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from 'styles/colors';
 import styles from './Pairing.style'
-const Pairing = ({ navigation }) => {
+const Pairing = () => {
 
     const [loading, setLoading] = React.useState(false);
     const [username, setUsername] = React.useState('');
     const userid = auth().currentUser.uid;
-
+    const dispatch = useDispatch();
     useEffect(() => {
         database()
             .ref('userDetails')
@@ -68,12 +70,15 @@ const Pairing = ({ navigation }) => {
                                         })
                                         .then(() => {
                                             showMessage({
-                                                message: 'Başarılı',
-                                                description: 'Bağlantı başarılı.',
+                                                message: 'Eşleştirme Başarılı',
+                                                description: 'Ebeveyn hesabıyla eşleştirme tamamlandı.',
                                                 backgroundColor: colors.main_green,
                                                 icon: 'success',
                                                 duration: 3000,
                                             })
+                                            dispatch(setParentId(snapshot.val()[i].userid));
+                                            dispatch(setChildId(userid));
+                                            dispatch(setPaired(true));
                                         })
                                         .catch((error) => {
                                             showMessage({
@@ -82,6 +87,18 @@ const Pairing = ({ navigation }) => {
                                                 backgroundColor: colors.main_pink,
                                                 icon: 'danger',
                                             })
+                                            database()
+                                                .ref('pairingTable')
+                                                .child(i)
+                                                .remove()
+                                                .then(() => {
+                                                    database()
+                                                        .ref('parentPairingCodes')
+                                                        .child(i)
+                                                        .update({
+                                                            isPaired: false,
+                                                        })
+                                                })
                                         })
                                 })
                                 .catch((error) => {
@@ -136,53 +153,45 @@ const Pairing = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground
-                source={require('assets/images/background.png')}
-                style={styles.bg_image_top}>
-            </ImageBackground>
-            <ImageBackground
-                source={require('assets/images/background.png')}
-                style={styles.bg_image_middle}>
-            </ImageBackground>
-            <ImageBackground
-                source={require('assets/images/background.png')}
-                style={styles.bg_image_bottom}>
-            </ImageBackground>
-            <TouchableOpacity style={styles.logout_button} onPress={handleLogout}>
-                <Icon name="logout" style={styles.logout_button_icon} />
-            </TouchableOpacity>
-            <View style={styles.pairing_view}>
-                <View style={styles.greeting_view}>
-                    <Text style={styles.greeting_text}>Hoş geldin
-                        <Text style={styles.greeting_text_child}> {username}</Text>.
-                    </Text>
-                    <Text style={styles.greeting_text}>Seni burada görmek çok güzel!</Text>
-                    <Text style={styles.pairing_text}>
-                        Uygulamayı kullanmaya başlamak için ebeveyninin seninle paylaştığı kodu aşağıya girmelisin.
-                    </Text>
+                source={require('assets/images/bg_full.png')}
+                style={styles.bg_image}>
+                <TouchableOpacity style={styles.logout_button} onPress={handleLogout}>
+                    <Icon name="logout" style={styles.logout_button_icon} />
+                </TouchableOpacity>
+                <View style={styles.pairing_view}>
+                    <View style={styles.greeting_view}>
+                        <Text style={styles.greeting_text}>Hoş geldin
+                            <Text style={styles.greeting_text_child}> {username}</Text>.
+                        </Text>
+                        <Text style={styles.greeting_text}>Seni burada görmek çok güzel!</Text>
+                        <Text style={styles.pairing_text}>
+                            Uygulamayı kullanmaya başlamak için ebeveyninin seninle paylaştığı kodu aşağıya girmelisin.
+                        </Text>
+                    </View>
+                    <View style={styles.formik_view}>
+                        <Formik initialValues={{ code: '' }} onSubmit={handleSendCode}>
+                            {({ handleChange, handleSubmit, values }) => (
+                                <>
+                                    <NativeBaseProvider>
+                                        <Input
+                                            placeholder="Eşleştirme Kodu" leftIcon='key-arrow-right' type='text'
+                                            value={values.code}
+                                            onChangeText={handleChange('code')}
+                                        />
+                                        <TouchableOpacity style={styles.send_code_button} onPress={handleSubmit} >
+                                            {loading ? (
+                                                <ActivityIndicator color={colors.main_white} />
+                                            ) : (
+                                                <Text style={styles.send_code_button_text}>Kodu Gönder</Text>
+                                            )}
+                                        </TouchableOpacity>
+                                    </NativeBaseProvider>
+                                </>
+                            )}
+                        </Formik>
+                    </View>
                 </View>
-                <View style={styles.formik_view}>
-                    <Formik initialValues={{ code: '' }} onSubmit={handleSendCode}>
-                        {({ handleChange, handleSubmit, values }) => (
-                            <>
-                                <NativeBaseProvider>
-                                    <Input
-                                        placeholder="Eşleştirme Kodu" leftIcon='key-arrow-right' type='text'
-                                        value={values.code}
-                                        onChangeText={handleChange('code')}
-                                    />
-                                    <TouchableOpacity style={styles.button} onPress={handleSubmit} >
-                                        {loading ? (
-                                            <ActivityIndicator color={colors.main_white} />
-                                        ) : (
-                                            <Text style={styles.button_text}>Kodu Gönder</Text>
-                                        )}
-                                    </TouchableOpacity>
-                                </NativeBaseProvider>
-                            </>
-                        )}
-                    </Formik>
-                </View>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
