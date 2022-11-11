@@ -1,4 +1,6 @@
 import React from 'react'
+import { Provider } from 'react-redux';
+import store from 'config/store';
 import { NavigationContainer } from '@react-navigation/native'
 import { AuthStack, ChildStack, LoadingStack, ParentStack } from 'navigation/index';
 import FlashMessage from "react-native-flash-message";
@@ -54,26 +56,28 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      {loading ? (
-        <LoadingStack />
-      ) : (
-        !userSession ? (
-          <AuthStack />
+    <Provider store={store}>
+      <NavigationContainer>
+        {loading ? (
+          <LoadingStack />
         ) : (
-          child ? (
-            <ChildStack />
+          !userSession ? (
+            <AuthStack />
           ) : (
-            parent ? (
-              <ParentStack />
+            child ? (
+              <ChildStack />
             ) : (
-              <LoadingStack />
+              parent ? (
+                <ParentStack />
+              ) : (
+                <LoadingStack />
+              )
             )
           )
-        )
-      )}
-      <FlashMessage position="top" />
-    </NavigationContainer>
+        )}
+        <FlashMessage position="top" />
+      </NavigationContainer>
+    </Provider>
   )
 }
 export default App
