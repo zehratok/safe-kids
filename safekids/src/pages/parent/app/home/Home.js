@@ -1,13 +1,17 @@
-import { View, Text } from 'react-native'
 import React from 'react'
-import { Link } from '@react-navigation/native'
+import { View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Greeting } from 'components';
+import styles from './Home.style';
 
 const Home = () => {
+  const [greetingMessage, setGreetingMessage] = React.useState('Çocuktan bir durum bildirimi alınmadı. Onu aşağıdaki butonlarla kontrol edebilirsin.');
   return (
-    <View>
-      <Text> Parent Home</Text>
-      <Link to={{ screen: 'Parent Profile' }} style={{ color: 'blue' }}> Profile git</Link>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.greeting_view}>
+        <Greeting greetingMessage={greetingMessage} />
+      </View>
+    </SafeAreaView>
   )
 }
 
