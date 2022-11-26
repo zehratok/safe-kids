@@ -4,7 +4,9 @@ import { NativeBaseProvider, StatusBar } from "native-base";
 import { Formik } from 'formik';
 import { Link } from '@react-navigation/native'
 import { showMessage } from 'react-native-flash-message';
-import {Button, Input} from 'components/index'
+import { Button, Input } from 'components/index'
+import { setUserId, setUserName } from 'config/slices/userDetailsSlice';
+import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
@@ -15,7 +17,7 @@ const Login = () => {
 
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-
+  const dispatch = useDispatch();
   const initialFormValues = {
     usermail: '',
     password: ''
@@ -106,6 +108,17 @@ const Login = () => {
         message: 'Giriş Başarılı',
         backgroundColor: colors.main_green,
       });
+      dispatch(setUserId(auth().currentUser.uid));
+      database()
+        .ref('userDetails/')
+        .once('value')
+        .then(snapshot => {
+          for (let i in snapshot.val()) {
+            if (snapshot.val()[i].userid == auth().currentUser.uid) {
+              dispatch(setUserName(snapshot.val()[i].username));
+            }
+          }
+        });
     } catch (error) {
       showMessage({
         message: authErrorMessageParser(error.code),

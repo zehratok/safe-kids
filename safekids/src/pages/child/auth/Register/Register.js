@@ -5,6 +5,8 @@ import { Formik } from 'formik';
 import { Link } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import {Button, Input} from 'components/index'
+import { setUserId, setUserName } from 'config/slices/userDetailsSlice';
+import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
@@ -21,6 +23,7 @@ const Register = () => {
   const [show, setShow] = React.useState(false);
   const [show2, setShow2] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const dispatch = useDispatch();
 
   const initialFormValues = {
     username: '',
@@ -104,6 +107,8 @@ const Register = () => {
         message: 'Kayıt Başarılı',
         backgroundColor: colors.main_green,
       });
+      dispatch(setUserId(userDetailsValues.userid));
+      dispatch(setUserName(userDetailsValues.username));
     } catch (error) {
       showMessage({
         message: authErrorMessageParser(error.code),
