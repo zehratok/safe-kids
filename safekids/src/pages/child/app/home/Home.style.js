@@ -12,5 +12,16 @@ const styles = StyleSheet.create({
         width: dimensions.fullWidth,
         justifyContent: 'center',
     },
+    quick_actions_view: {
+        flexDirection: 'row',
+        height: dimensions.fullHeight * 0.1,
+        width: dimensions.fullWidth,
+        justifyContent: 'center',
+        borderRadius: 5,
+        position: 'absolute',
+        top: dimensions.fullHeight * 0.15,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+    },
 });
 export default styles;
