@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     },
     code_text: {
         textAlign: 'center',
-        fontSize: 0.05 * fullWidth,
+        fontSize: 0.1 * fullWidth,
         fontWeight: 'bold',
         color: colors.main_pink,
     },
