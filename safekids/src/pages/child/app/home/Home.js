@@ -1,17 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Greeting, IconButton } from 'components';
+import { showMessage } from 'react-native-flash-message';
+import NotificationService from 'services/NotificationService';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import styles from './Home.style'
-import { showMessage } from 'react-native-flash-message';
 import colors from 'styles/colors';
 
 const Home = () => {
 
   const greetingMessage = 'Kendini nasıl hissediyorsun? Aşağıdaki butonlarla kendini ifade edebilirsin.';
   const [mood, setMood] = useState(null);
+  const [parentToken, setParentToken] = useState('');
+  const notification = {
+    title: 'Çocuğunuzdan bildirim var!',
+    body: 'Çocuğunuzun duygularını değiştirdiğini gördük. Lütfen ona yardımcı olun.',
+    token: parentToken
+  }
+
+  useEffect(() => {
+    database()
+      .ref('pairingTable')
+      .once('value')
+      .then(snapshot => {
+        for (let i in snapshot.val()) {
+          if (snapshot.val()[i].childid == auth().currentUser.uid) {
+            setParentToken(snapshot.val()[i].parenttoken);
+          }
+        }
+      });
+  }, [])
 
   const handleMoodChange = async (mood) => {
     setMood(mood);
@@ -29,6 +49,7 @@ const Home = () => {
         message: error,
         backgroundColor: colors.main_pink,
       }));
+    NotificationService.sendSingleDeviceNotification({ notification });
   }
 
   return (

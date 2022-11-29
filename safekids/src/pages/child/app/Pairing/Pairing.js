@@ -10,6 +10,7 @@ import { setParentId, setChildId, setPaired } from 'config/slices/pairingSlice';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import databaseErrorMessageParse from 'utils/databaseErrorMessageParse';
+import messaging from '@react-native-firebase/messaging';
 import Icon from 'react-native-vector-icons/AntDesign';
 import colors from 'styles/colors';
 import styles from './Pairing.style'
@@ -17,6 +18,7 @@ const Pairing = () => {
 
     const [loading, setLoading] = React.useState(false);
     const [username, setUsername] = React.useState('');
+    const [token, setToken] = React.useState('');
     const userid = auth().currentUser.uid;
     const dispatch = useDispatch();
     useEffect(() => {
@@ -30,8 +32,15 @@ const Pairing = () => {
                     }
                 }
             })
+        getFCMToken();
     }, [])
-
+    const getFCMToken = async () => {
+        await messaging()
+            .getToken()
+            .then(token => {
+                setToken(token);
+            });
+    };
     const handleSendCode = async (formValues) => {
         setLoading(true);
         let count = 0;
@@ -60,6 +69,8 @@ const Pairing = () => {
                                     parentmail: snapshot.val()[i].usermail,
                                     childid: userid,
                                     childmail: auth().currentUser.email,
+                                    parenttoken: snapshot.val()[i].token,
+                                    childtoken: token,
                                 })
                                 .then(() => {
                                     database()

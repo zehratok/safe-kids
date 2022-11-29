@@ -11,18 +11,15 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
 import colors from 'styles/colors';
+import messaging from '@react-native-firebase/messaging';
 import styles from './Register.style';
 
 const Register = () => {
-  useEffect(() => {
-    return () => {
-      console.log('unmounting...');
-    };
-  }, []);
 
   const [show, setShow] = React.useState(false);
   const [show2, setShow2] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [token, setToken] = React.useState('');
   const dispatch = useDispatch();
 
   initialFormValues = {
@@ -31,11 +28,24 @@ const Register = () => {
     password: '',
     passwordCheck: '',
   };
+  useEffect(() => {
+    getFCMToken();
+
+  }, []);
+
+  const getFCMToken = () => {
+    messaging()
+      .getToken()
+      .then(token => {
+        setToken(token);
+      });
+  };
 
   async function handleRegister(formValues) {
     const parentPairingValues = {
       isPaired: false,
       pairingCode: '',
+      token: token,
       userid: '',
       usermail: formValues.usermail,
     }

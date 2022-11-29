@@ -5,7 +5,7 @@ buildscript {
         buildToolsVersion = "31.0.0"
         kotlin_version = '1.6.10'
         minSdkVersion = 21
-        compileSdkVersion = 31
+        compileSdkVersion = 33
         targetSdkVersion = 31
 
         if (System.properties['os.arch'] == "aarch64") {
@@ -25,7 +25,7 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("de.undercouch:gradle-download-task:5.0.1")
         classpath ('com.google.gms:google-services:4.3.14')
-       classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
