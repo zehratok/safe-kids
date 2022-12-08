@@ -5,8 +5,6 @@ import { Formik } from 'formik';
 import { Link } from '@react-navigation/native'
 import { showMessage } from 'react-native-flash-message';
 import {Button, Input} from 'components/index'
-import { setUserId, setUserName } from 'config/slices/userDetailsSlice';
-import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
@@ -17,7 +15,6 @@ const Login = () => {
 
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const dispatch = useDispatch();
   const initialFormValues = {
     usermail: '',
     password: ''
@@ -68,10 +65,10 @@ const Login = () => {
           let count = 0;
           for (let i in snapshot.val()) {
             if (snapshot.val()[i].usermail === formValues.usermail) {
-              if (snapshot.val()[i].usertype == 1) {
+              if (snapshot.val()[i].usertype === 1) {
                 handleParentLogin(formValues);
               }
-              else if (snapshot.val()[i].usertype == 2) {
+              else if (snapshot.val()[i].usertype === 2) {
                 showMessage({
                   message: 'Bu e-posta adresi çocuk hesabına aittir. Çocuk girişi için lütfen çocuk giriş sayfasına gidiniz.',
                   backgroundColor: colors.main_pink,
@@ -80,7 +77,7 @@ const Login = () => {
             }
             else count++;
           }
-          if (count == Object.keys(snapshot.val()).length) {
+          if (count === Object.keys(snapshot.val()).length) {
             showMessage({
               message: 'Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.',
               backgroundColor: colors.main_pink,
@@ -108,14 +105,14 @@ const Login = () => {
         message: 'Giriş Başarılı',
         backgroundColor: colors.main_green,
       });
-      dispatch(setUserId(auth().currentUser.uid));
+      // dispatch(setUserId(auth().currentUser.uid));
       database()
         .ref('userDetails/')
         .once('value')
         .then(snapshot => {
           for (let i in snapshot.val()) {
-            if (snapshot.val()[i].userid == auth().currentUser.uid) {
-              dispatch(setUserName(snapshot.val()[i].username));
+            if (snapshot.val()[i].userid === auth().currentUser.uid) {
+             // dispatch(setUserName(snapshot.val()[i].username));
             }
           }
         });

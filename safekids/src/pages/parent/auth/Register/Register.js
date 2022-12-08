@@ -5,8 +5,6 @@ import { Link } from '@react-navigation/native';
 import { Formik } from 'formik';
 import { showMessage } from 'react-native-flash-message';
 import { Button, Input } from 'components/index'
-import { setUserId, setUserName } from 'config/slices/userDetailsSlice';
-import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
@@ -20,9 +18,8 @@ const Register = () => {
   const [show2, setShow2] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [token, setToken] = React.useState('');
-  const dispatch = useDispatch();
 
-  initialFormValues = {
+  const initialFormValues = {
     username: '',
     usermail: '',
     password: '',
@@ -45,9 +42,10 @@ const Register = () => {
     const parentPairingValues = {
       isPaired: false,
       pairingCode: '',
-      token: token,
-      userid: '',
-      usermail: formValues.usermail,
+      parenttoken: token,
+      parentid: '',
+      parentemail: formValues.usermail,
+      parentname: formValues.username,
     }
     const userDetailsValues = {
       userid: '',
@@ -118,15 +116,15 @@ const Register = () => {
         formValues.password
       );
       userDetailsValues.userid = auth().currentUser.uid;
-      parentPairingValues.userid = auth().currentUser.uid;
-      database().ref('userDetails/').push(userDetailsValues);
-      database().ref('parentPairingCodes/').push(parentPairingValues);
+      parentPairingValues.parentid = auth().currentUser.uid;
+      const uid = auth().currentUser.uid;
+      await database().ref('userDetails/').push(userDetailsValues);
+      await database().ref('pairingCodes/').push(parentPairingValues);
+      await database().ref('pairingParent/' +uid).update({isPaired:false});
       showMessage({
         message: 'Kayıt Başarılı',
         backgroundColor: colors.main_green,
       });
-      dispatch(setUserId(userDetailsValues.userid));
-      dispatch(setUserName(userDetailsValues.username));
     } catch (error) {
       showMessage({
         message: authErrorMessageParser(error.code),

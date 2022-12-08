@@ -1,30 +1,21 @@
-import React, { useEffect } from 'react'
+import React, {useState} from 'react'
 import { Image, ImageBackground, ScrollView, Text, View } from 'react-native'
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { Formik } from 'formik';
 import { Link } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
-import {Button, Input} from 'components/index'
-import { setUserId, setUserName } from 'config/slices/userDetailsSlice';
-import { useDispatch } from 'react-redux';
+import {Button, Input} from 'components'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import authErrorMessageParser from 'utils/authErrorMessageParser';
 import colors from 'styles/colors';
 import styles from './Register.style';
 
-
 const Register = () => {
-  useEffect(() => {
-    return () => {
-      console.log('unmounting...');
-    };
-  }, [])
-  const [show, setShow] = React.useState(false);
-  const [show2, setShow2] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const dispatch = useDispatch();
 
+  const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(false);
+  const [loading, setLoading] = useState(false);
   const initialFormValues = {
     username: '',
     usermail: '',
@@ -102,13 +93,13 @@ const Register = () => {
         formValues.password
       );
       userDetailsValues.userid = auth().currentUser.uid;
-      database().ref('userDetails/').push(userDetailsValues);
+      const uid = auth().currentUser.uid;
+      await database().ref('userDetails/').push(userDetailsValues);
+      await database().ref('pairingChild/' + uid).update({isPaired: false,})
       showMessage({
         message: 'Kayıt Başarılı',
         backgroundColor: colors.main_green,
       });
-      dispatch(setUserId(userDetailsValues.userid));
-      dispatch(setUserName(userDetailsValues.username));
     } catch (error) {
       showMessage({
         message: authErrorMessageParser(error.code),
@@ -119,13 +110,9 @@ const Register = () => {
     }
   }
   return (
-    <ScrollView style={styles.container}
-      showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <StatusBar backgroundColor="#B0CFD5" barStyle="light-content" />
-      <ImageBackground
-        source={require('assets/images/background.png')}
-        style={styles.bg_image}>
-      </ImageBackground>
+      <ImageBackground source={require('assets/images/background.png')} style={styles.bg_image}></ImageBackground>
       <View style={styles.bottom_view}>
         <View style={styles.child_image_view}>
           <Image style={styles.boy_image} source={require('assets/images/child_boy.png')} />
@@ -136,27 +123,10 @@ const Register = () => {
             {({ handleChange, handleSubmit, values }) => (
               <>
                 <NativeBaseProvider>
-                  <Input
-                    placeholder="Kullanıcı adı" leftIcon='account' type='text'
-                    label='Kullanıcı Adı Girin' value={values.username}
-                    onChangeText={handleChange('username')}
-                  />
-                  <Input
-                    placeholder="E-posta" leftIcon='email' type='text'
-                    label='E-posta Adresi Girin' value={values.usermail}
-                    onChangeText={handleChange('usermail')}
-                  />
-                  <Input
-                    placeholder="Parola" leftIcon='lock'
-                    label='Parola Girin' rightIcon={show ? "eye" : "eye-off"}
-                    onPress={() => setShow(!show)} type={show ? "text" : "password"}
-                    value={values.password} onChangeText={handleChange('password')}
-                  />
-                  <Input placeholder="Parola Tekrar" leftIcon='lock'
-                    label='Parolanızı Doğrulayın' rightIcon={show2 ? "eye" : "eye-off"}
-                    onPress={() => setShow2(!show2)} type={show2 ? "text" : "password"}
-                    value={values.passwordCheck} onChangeText={handleChange('passwordCheck')}
-                  />
+                  <Input placeholder="Kullanıcı adı" leftIcon='account' type='text' label='Kullanıcı Adı Girin' value={values.username} onChangeText={handleChange('username')}/>
+                  <Input placeholder="E-posta" leftIcon='email' type='text' label='E-posta Adresi Girin' value={values.usermail} onChangeText={handleChange('usermail')}/>
+                  <Input placeholder="Parola" leftIcon='lock' label='Parola Girin' rightIcon={show ? "eye" : "eye-off"} onPress={() => setShow(!show)} type={show ? "text" : "password"} value={values.password} onChangeText={handleChange('password')}/>
+                  <Input placeholder="Parola Tekrar" leftIcon='lock' label='Parolanızı Doğrulayın' rightIcon={show2 ? "eye" : "eye-off"} onPress={() => setShow2(!show2)} type={show2 ? "text" : "password"} value={values.passwordCheck} onChangeText={handleChange('passwordCheck')}/>
                   <Button text='Kaydol' onPress={handleSubmit} loading={loading} />
                 </NativeBaseProvider>
               </>
