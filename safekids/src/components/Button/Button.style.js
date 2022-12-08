@@ -21,9 +21,7 @@ export default StyleSheet.create({
         marginVertical: 0.02 * dimensions.fullHeight,
         backgroundColor: colors.sec_green,
         alignItems: "center",
-    },
-    button_container: {
-        backgroundColor: colors.sec_green,
+        justifyContent: "center",
     },
     button_text: {
         fontWeight: "bold",

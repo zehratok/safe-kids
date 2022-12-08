@@ -1,23 +1,16 @@
 import React from 'react'
-import { ActivityIndicator, Text } from 'react-native'
-import { Box, Button } from 'native-base'
+import { ActivityIndicator, Text, TouchableOpacity } from 'react-native'
 import styles from './Button.style'
- 
-const Buttons = ({ text, onPress, loading, icon }) => {
+
+const Button = ({ text, onPress, loading }) => {
   return (
-    <Box style={styles.container}>
-      <Button onPress={onPress}
-        w="85%"
-        disabled={loading}
-        style={styles.button_container}>
+    <TouchableOpacity style={styles.container} onPress={onPress} disabled={loading}>
         {loading ? (
           <ActivityIndicator color="white" />
         ) : (
           <Text style={styles.button_text}>{text}</Text>
         )}
-      </Button>
-    </Box >
+      </TouchableOpacity>
   )
 }
-
-export default Buttons
+export default Button
